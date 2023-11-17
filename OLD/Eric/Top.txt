@@ -1,0 +1,102 @@
+module Top(
+            input               i_sys_clk,
+
+            input               i_uart_rst,
+            input               i_cnt_rst,
+            input               i_clk_wiz_rst,
+            input               i_sys_rst,
+
+            input               i_forms,  
+            input               i_h_sel,
+            input               i_push,
+          
+            output     [3:0]    o_red,
+            output     [3:0]    o_green,
+            output     [3:0]    o_blue,
+
+            output              o_hsync,
+            output              o_vsync,
+
+            output     [6:0]    o_seg,
+            output              o_DP,          
+            output     [7:0]    o_AN,
+
+            output     [4:0]    o_LED,
+            output              LED
+);
+            wire                sha_clk;
+            wire                an_clk;
+            wire        [3:0]   H0;
+            wire        [4:0]   H1;
+            wire        [2:0]   H3;
+            wire        [159:0] H_wire;
+            wire        [511:0] r_data;
+            wire                o_p;          
+        Switch_Handler      s_handler(
+            .h_select               (i_h_sel);            
+            .SW                     ();    
+            .clk                    (i_sys_clk);        
+            .rst                    (i_sys_rst);        
+            .push                   (i_push);        
+            .h0                     (H0);    
+            .h1                     (H1);    
+            .h2                     ();    
+            .h3                     (H3)            
+        );
+
+        clock_divider       c_div(
+            .o_an_clk               (an_clk);            
+            .out_clkd               (sha_clk);            
+            .clk                    (i_sys_clk);        
+            .sys_rst                (i_cnt_rst);            
+            .S_cd                   ()               
+        );
+        UART_Driver         Uart_Driver(
+            .clk                    ();
+            .rst                    (i_uart_rst);
+            .r_data                 (r_data);
+            .rd_uart                ();
+            .rx_empty               ();                                 
+            .rx                     ();         
+            .w_data                 ();             
+            .wr_uart                ();                 
+            .TIMER_FINAL_VALUE      ()                        
+
+        );
+
+        sha_core            core(
+            .clk                    (sha_clk);
+            .rst                    (H0[0]);
+            .block                  (r_data);
+            .H_0                    (H_wire[31:0]);                 
+            .H_1                    (H_wire[63:32]);                 
+            .H_2                    (H_wire[95:64]);
+            .H_3                    (H_wire[127:96]);
+            .H_4                    (H_wire[159:128])
+        );
+
+        display_driver_8dig display(
+            .in                     (o_p);                 
+            .clk                    (an_clk);         
+            .dec_en                 (H0[3]);         
+            .cnt_rst                (H0[2]);             
+            .seg                    (o_seg);         
+            .dp                     (o_DP);     
+            .an                     (o_AN)     
+        );
+        vga_driver          vga_d(
+            .clk                    (clk_25);    
+            .rst                    (H0[1]);    
+            .o_hsync                (o_hsync);        
+            .o_vsync                (o_vsync);        
+            .o_red                  (o_red);    
+            .o_blue                 (o_blue);    
+            .o_green                (o_green)       
+        );
+        Hash_selector       hash_selctor(
+            .i_input                (H_wire);           
+            .i_select               (H3);       
+            .o_P                    (o_p)  
+        );
+
+endmodule

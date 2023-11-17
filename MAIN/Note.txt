@@ -1,0 +1,3 @@
+Form1.s is a C# Windows Form program that pads an input and sends it to UART via Serial Ports
+3300_Project_Schematic.pdf is NOT accurate with completed design
+Constraint, Simulation, Sources Refer to the Verilog Function

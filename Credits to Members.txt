@@ -1,0 +1,23 @@
+Andrew Khechatourian
+    OLD --> Andrew
+    MAIN --> nbit_counter.v, timer_input.v, UART_Driver.v, UART_RX.v
+
+
+Charles Tran
+    OLD --> Andrew
+    MAIN --> Clock_Divider.v, dec_3x8.v, display_driver_8dig.v, 
+             mux_2x1.v, mux8x1_4bit.v, nbit_mux.v, segment_display_7.v, 
+             Switch_Handler_Lab_9.v, top.v, vga_driver.v, Clock_Divider_tb.v,
+             SW_Handler_tb.v, top_tb.v, task_0.xdc
+ 
+Eric Tran
+    OLD --> Eric 
+    MAIN --> Most of the Old Files Eric provided were 
+             modified by Charles and put into the project.
+             Also provided initial C# program for padding
+             which was modified by Charles to run in a C#
+             Windows Forms Program
+
+Luke Yu
+    OLD --> Luke
+    MAIN --> sha_core.v,sha_tb.v
